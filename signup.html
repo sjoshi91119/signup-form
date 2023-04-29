@@ -8,16 +8,17 @@
     <h1>Signup</h1>
 	<form>
 		<label for="name">Name:</label>
-		<input type="text" id="name" required>
+		<input type="text" id="name">
 		<label for="email">Email:</label>
-		<input type="email" id="email" required>
+		<input type="email" id="email">
 		<label for="password">Password:</label>
-		<input type="password" id="password" required>
+		<input type="password" id="password" >
 		<label for="confirm-password">Confirm Password:</label>
-		<input type="password" id="confirm-password" required>
-		<button id="signup-btn">Signup</button>
-		<p class="error" id="error"></p>
+		<input type="password" id="confirm-password">
+        <p class="error" id="error"></p>
 		<p class="success" id="success"></p>
+		<button id="signup-btn">Signup</button>
+		
 	</form>
 
     <script>
@@ -25,38 +26,45 @@
         const error = document.querySelector('#error');
         const success = document.querySelector('#success');
         const signupBtn = document.querySelector('#signup-btn');
-    
+        
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-    
+        
+            // Clear any existing error or success messages
+            error.innerHTML = '';
+            success.innerHTML = '';
+        
             const name = document.querySelector('#name').value;
             const email = document.querySelector('#email').value;
             const password = document.querySelector('#password').value;
             const confirmPassword = document.querySelector('#confirm-password').value;
-    
-            if (password !== confirmPassword) {b
-                error.innerHTML = 'Passwords do not match';
-                success.innerHTML = '';
+        
+            if (!name || !email || !password || !confirmPassword) {
+                error.innerHTML = 'Error: all fields are mandatory';
                 return;
             }
-    
+        
+            if (password !== confirmPassword) {
+                error.innerHTML = 'Passwords do not match';
+                return;
+            }
+        
             const user = {
                 name,
                 email,
                 password
             };
-    
+        
             const accessToken = generateAccessToken();
-    
+        
             localStorage.setItem('user', JSON.stringify({...user, accessToken}));
-    
+        
             success.innerHTML = 'Signup successful. Redirecting to profile...';
-            error.innerHTML = '';
             setTimeout(() => {
                 window.location.href = 'profile.html';
             }, 3000);
         });
-    
+        
         function generateAccessToken() {
             const accessToken = [];
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -65,6 +73,7 @@
             }
             return accessToken.join('');
         }
+        
     </script>
     </body>
     </html>
