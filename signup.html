@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Signup</title>
+	<link rel="stylesheet" href="signupStyle.css">
+</head>
+<body>
+    <h1>Signup</h1>
+	<form>
+		<label for="name">Name:</label>
+		<input type="text" id="name" required>
+		<label for="email">Email:</label>
+		<input type="email" id="email" required>
+		<label for="password">Password:</label>
+		<input type="password" id="password" required>
+		<label for="confirm-password">Confirm Password:</label>
+		<input type="password" id="confirm-password" required>
+		<button id="signup-btn">Signup</button>
+		<p class="error" id="error"></p>
+		<p class="success" id="success"></p>
+	</form>
+
+    <script>
+        const form = document.querySelector('form');
+        const error = document.querySelector('#error');
+        const success = document.querySelector('#success');
+        const signupBtn = document.querySelector('#signup-btn');
+    
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+    
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+            const password = document.querySelector('#password').value;
+            const confirmPassword = document.querySelector('#confirm-password').value;
+    
+            if (password !== confirmPassword) {b
+                error.innerHTML = 'Passwords do not match';
+                success.innerHTML = '';
+                return;
+            }
+    
+            const user = {
+                name,
+                email,
+                password
+            };
+    
+            const accessToken = generateAccessToken();
+    
+            localStorage.setItem('user', JSON.stringify({...user, accessToken}));
+    
+            success.innerHTML = 'Signup successful. Redirecting to profile...';
+            error.innerHTML = '';
+            setTimeout(() => {
+                window.location.href = 'profile.html';
+            }, 3000);
+        });
+    
+        function generateAccessToken() {
+            const accessToken = [];
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (let i = 0; i < 16; i++) {
+                accessToken.push(characters.charAt(Math.floor(Math.random() * characters.length)));
+            }
+            return accessToken.join('');
+        }
+    </script>
+    </body>
+    </html>
+ 
+    
+  
